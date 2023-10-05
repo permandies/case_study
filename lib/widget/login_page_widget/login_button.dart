@@ -7,6 +7,7 @@ import 'package:case_study/view/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,9 +48,11 @@ class _LoginButtonState extends State<LoginButton> {
             bool? validate = widget.formKey.currentState?.validate();
             if (validate != null) {
               if (validate) {
-                Response response = await LoginRegisterServices().register(widget.email.text, widget.password.text);
+                Response response =
+                    await GetIt.I<LoginRegisterServices>().register(widget.email.text, widget.password.text);
                 if (response.statusCode == HttpStatus.ok) {
                   String token = jsonDecode(response.body)["token"];
+
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
                   StateProvider<String>((ref) => token);
                   await prefs.setString("token", token);

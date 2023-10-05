@@ -8,6 +8,7 @@ import 'package:case_study/widget/home_page_widget/user_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<UsersResponse?> getUsers(int page) async {
     if (controller.userResponses[page] == null) {
-      Response response = await UserServices().getUsers(currentPage);
+      Response response = await GetIt.I<UserServices>().getUsers(currentPage);
       UsersResponse userReponse = UsersResponse.fromJson(jsonDecode(response.body));
       controller.userResponses[page] = userReponse;
     }
@@ -71,7 +72,7 @@ class TokenWidget extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     var token = ref.watch(tokenProvider);
     return Text(
-      token ?? "",
+      "Kullanıcı token: ${token ?? ""}",
       style: const TextStyle(color: Colors.white),
     );
   }

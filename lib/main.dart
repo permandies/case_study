@@ -1,4 +1,6 @@
 import 'package:case_study/controller/controller.dart';
+import 'package:case_study/service/login_register_services.dart';
+import 'package:case_study/service/user_services.dart';
 import 'package:case_study/view/home_page/home_page.dart';
 import 'package:case_study/view/login_page/login_page.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,8 @@ Future<bool> setup() async {
   final getIt = GetIt.instance;
   SharedPreferences sharedPref = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(sharedPref);
+  getIt.registerSingleton<LoginRegisterServices>(LoginRegisterServices());
+  getIt.registerSingleton<UserServices>(UserServices());
   String? token = getIt<SharedPreferences>().getString("token");
 
   if (token != null) {
